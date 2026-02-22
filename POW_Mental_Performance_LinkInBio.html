@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>POW Mental Performance</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0a;
+    --bg-card: #131313;
+    --bg-card-hover: #1a1a1a;
+    --bg-form: #111111;
+    --gold: #E8A838;
+    --gold-dim: rgba(232, 168, 56, 0.12);
+    --gold-glow: rgba(232, 168, 56, 0.08);
+    --gold-border: rgba(232, 168, 56, 0.15);
+    --gold-border-h: rgba(232, 168, 56, 0.4);
+    --green: #5ee67a;
+    --green-bg: rgba(56, 232, 100, 0.08);
+    --green-border: rgba(56, 232, 100, 0.2);
+    --text: #f5f0ea;
+    --text-2: #a89e94;
+    --text-3: #6b6560;
+    --r: 14px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% 0%, rgba(232,168,56,0.05) 0%, transparent 55%);
+    pointer-events: none;
+  }
+
+  .page { width: 100%; max-width: 440px; padding: 24px 16px 52px; position: relative; z-index: 1; }
+
+  /* ═══ HEADER ═══ */
+  .header { text-align: center; margin-bottom: 28px; animation: fadeUp .6s ease both; }
+
+  .avatar-wrap {
+    width: 96px; height: 96px; border-radius: 50%; padding: 3px;
+    background: linear-gradient(135deg, var(--gold), #d4922e, var(--gold));
+    margin: 0 auto 14px;
+    animation: ringPulse 3s ease-in-out infinite;
+  }
+  .avatar-inner {
+    width: 100%; height: 100%; border-radius: 50%; background: var(--bg);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Bebas Neue', sans-serif; font-size: 32px; letter-spacing: 2px; color: var(--gold);
+  }
+
+  .h-name { font-family: 'Bebas Neue', sans-serif; font-size: 26px; letter-spacing: 4px; }
+  .h-name span { color: var(--gold); }
+  .h-tag { font-size: 12px; color: var(--text-2); font-weight: 600; letter-spacing: 2px; text-transform: uppercase; margin: 2px 0 10px; }
+  .h-bio { font-size: 13.5px; color: var(--text-2); line-height: 1.6; max-width: 310px; margin: 0 auto; font-style: italic; }
+
+  .badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: var(--green-bg); border: 1px solid var(--green-border);
+    border-radius: 20px; padding: 5px 14px; font-size: 11.5px;
+    color: var(--green); font-weight: 600; margin-top: 12px; letter-spacing: .5px;
+  }
+  .badge-dot { width: 6px; height: 6px; background: var(--green); border-radius: 50%; animation: blink 2s ease-in-out infinite; }
+
+  /* ═══ STATS ═══ */
+  .stats {
+    display: flex; justify-content: center; gap: 32px;
+    padding: 16px 0; margin-bottom: 24px;
+    border-top: 1px solid var(--gold-border); border-bottom: 1px solid var(--gold-border);
+    animation: fadeUp .6s ease .1s both;
+  }
+  .stat-n { font-family: 'Bebas Neue', sans-serif; font-size: 24px; color: var(--gold); line-height: 1; text-align: center; }
+  .stat-l { font-size: 10px; color: var(--text-3); text-transform: uppercase; letter-spacing: 1.5px; margin-top: 3px; text-align: center; }
+
+  /* ═══ SECTION ═══ */
+  .sec { margin-bottom: 22px; }
+  .sec-label {
+    font-family: 'Bebas Neue', sans-serif; font-size: 13px; letter-spacing: 3px;
+    color: var(--gold); margin-bottom: 10px; padding-left: 4px; opacity: .8;
+  }
+
+  /* ═══ LINK CARDS ═══ */
+  .card {
+    display: flex; align-items: center; gap: 14px;
+    background: var(--bg-card); border: 1px solid var(--gold-border);
+    border-radius: var(--r); padding: 15px 16px; margin-bottom: 10px;
+    text-decoration: none; color: var(--text); transition: all .25s ease;
+    cursor: pointer; position: relative; overflow: hidden;
+  }
+  .card::after {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(135deg, var(--gold-glow), transparent);
+    opacity: 0; transition: opacity .3s;
+  }
+  .card:hover { border-color: var(--gold-border-h); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,.3); }
+  .card:hover::after { opacity: 1; }
+
+  .card-icon {
+    width: 40px; height: 40px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 19px; flex-shrink: 0; z-index: 1;
+  }
+  .card-body { flex: 1; z-index: 1; }
+  .card-title { font-size: 14.5px; font-weight: 600; margin-bottom: 1px; }
+  .card-desc { font-size: 12px; color: var(--text-2); line-height: 1.4; }
+  .card-arrow { font-size: 17px; color: var(--text-3); transition: all .25s; z-index: 1; }
+  .card:hover .card-arrow { color: var(--gold); transform: translateX(3px); }
+
+  .ic-gold { background: var(--gold-dim); }
+  .ic-green { background: rgba(56,232,100,.1); }
+  .ic-blue { background: rgba(130,170,255,.1); }
+  .ic-pink { background: rgba(225,100,180,.1); }
+  .ic-purple { background: rgba(180,130,255,.1); }
+  .ic-orange { background: rgba(255,150,100,.1); }
+
+  /* ═══ CTA ═══ */
+  .cta {
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+    background: linear-gradient(135deg, var(--gold), #d4922e);
+    border: none; border-radius: var(--r); padding: 17px 24px; margin-bottom: 10px;
+    color: #0a0a0a; font-family: 'Bebas Neue', sans-serif; font-size: 19px;
+    letter-spacing: 3px; cursor: pointer; transition: all .3s;
+    box-shadow: 0 4px 18px rgba(232,168,56,.22); width: 100%; text-decoration: none;
+  }
+  .cta:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(232,168,56,.32); }
+
+  .cta-outline {
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+    background: transparent;
+    border: 2px solid var(--gold); border-radius: var(--r); padding: 15px 24px; margin-bottom: 10px;
+    color: var(--gold); font-family: 'Bebas Neue', sans-serif; font-size: 17px;
+    letter-spacing: 2px; cursor: pointer; transition: all .3s;
+    width: 100%; text-decoration: none;
+  }
+  .cta-outline:hover { background: var(--gold-dim); transform: translateY(-1px); }
+
+  /* ═══ TESTIMONIAL ═══ */
+  .testi {
+    background: var(--bg-card); border: 1px solid var(--gold-border);
+    border-radius: var(--r); padding: 18px; text-align: center; margin-bottom: 10px;
+  }
+  .testi-q { font-size: 13px; color: var(--text-2); line-height: 1.7; font-style: italic; margin-bottom: 8px; }
+  .testi-a { font-size: 11px; color: var(--text-3); font-weight: 600; letter-spacing: .5px; }
+
+  /* ═══ FOOTER ═══ */
+  .footer { text-align: center; margin-top: 28px; padding-top: 18px; border-top: 1px solid var(--gold-border); }
+  .footer-b { font-family: 'Bebas Neue', sans-serif; font-size: 13px; letter-spacing: 4px; color: var(--text-3); margin-bottom: 4px; }
+  .footer-s { font-size: 10.5px; color: var(--text-3); opacity: .6; }
+
+  /* ═══ MODAL OVERLAY ═══ */
+  .overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,.75); backdrop-filter: blur(8px);
+    z-index: 100; display: flex; align-items: flex-end; justify-content: center;
+    opacity: 0; pointer-events: none; transition: opacity .3s ease;
+  }
+  .overlay.open { opacity: 1; pointer-events: auto; }
+
+  .modal {
+    background: var(--bg-form); border: 1px solid var(--gold-border);
+    border-radius: 20px 20px 0 0; width: 100%; max-width: 480px;
+    max-height: 92vh; overflow-y: auto; padding: 28px 20px 36px;
+    transform: translateY(100%); transition: transform .35s cubic-bezier(.22,1,.36,1);
+  }
+  .overlay.open .modal { transform: translateY(0); }
+
+  .modal-head {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  .modal-title { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 2px; }
+  .modal-close {
+    width: 34px; height: 34px; border-radius: 50%; border: 1px solid var(--gold-border);
+    background: transparent; color: var(--text-2); font-size: 18px;
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+    transition: all .2s;
+  }
+  .modal-close:hover { border-color: var(--gold); color: var(--gold); }
+
+  /* ═══ CLIENT TYPE SELECTOR ═══ */
+  .type-grid { display: flex; flex-direction: column; gap: 10px; }
+
+  .type-card {
+    display: flex; align-items: center; gap: 14px;
+    background: var(--bg-card); border: 1px solid var(--gold-border);
+    border-radius: var(--r); padding: 16px; cursor: pointer; transition: all .25s;
+  }
+  .type-card:hover { border-color: var(--gold-border-h); background: var(--bg-card-hover); }
+  .type-card .tc-icon { font-size: 24px; flex-shrink: 0; }
+  .type-card .tc-title { font-size: 14px; font-weight: 600; margin-bottom: 2px; }
+  .type-card .tc-desc { font-size: 11.5px; color: var(--text-2); line-height: 1.4; }
+
+  /* ═══ FORM STYLES ═══ */
+  .form-section { display: none; }
+  .form-section.active { display: block; }
+
+  .form-back {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: none; border: none; color: var(--text-2); font-size: 13px;
+    cursor: pointer; margin-bottom: 16px; font-family: 'DM Sans', sans-serif;
+    transition: color .2s;
+  }
+  .form-back:hover { color: var(--gold); }
+
+  .form-group { margin-bottom: 14px; }
+  .form-label {
+    display: block; font-size: 12px; font-weight: 600;
+    color: var(--text-2); margin-bottom: 5px; letter-spacing: .5px;
+  }
+  .form-input, .form-select, .form-textarea {
+    width: 100%; padding: 12px 14px; background: var(--bg);
+    border: 1px solid var(--gold-border); border-radius: 10px;
+    color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 14px;
+    transition: border-color .2s; outline: none;
+    -webkit-appearance: none;
+  }
+  .form-input:focus, .form-select:focus, .form-textarea:focus { border-color: var(--gold); }
+  .form-input::placeholder, .form-textarea::placeholder { color: var(--text-3); }
+
+  .form-select { cursor: pointer; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236b6560' fill='none' stroke-width='1.5'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 36px; }
+  .form-select option { background: var(--bg); color: var(--text); }
+
+  .form-textarea { resize: vertical; min-height: 80px; }
+
+  .form-row { display: flex; gap: 10px; }
+  .form-row .form-group { flex: 1; }
+
+  .form-submit {
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    width: 100%; padding: 16px;
+    background: linear-gradient(135deg, var(--gold), #d4922e);
+    border: none; border-radius: var(--r); color: #0a0a0a;
+    font-family: 'Bebas Neue', sans-serif; font-size: 18px; letter-spacing: 2px;
+    cursor: pointer; transition: all .3s; margin-top: 6px;
+    box-shadow: 0 4px 16px rgba(232,168,56,.2);
+  }
+  .form-submit:hover { transform: translateY(-1px); box-shadow: 0 6px 24px rgba(232,168,56,.3); }
+  .form-submit:disabled { opacity: .6; cursor: not-allowed; transform: none; }
+
+  .form-note {
+    text-align: center; font-size: 11px; color: var(--text-3);
+    margin-top: 12px; line-height: 1.5;
+  }
+
+  /* ═══ CHECKBOX GROUP ═══ */
+  .check-group { display: flex; flex-wrap: wrap; gap: 8px; }
+  .check-item {
+    display: flex; align-items: center; gap: 6px;
+    background: var(--bg); border: 1px solid var(--gold-border);
+    border-radius: 8px; padding: 8px 12px; cursor: pointer;
+    transition: all .2s; font-size: 12.5px; color: var(--text-2);
+  }
+  .check-item:hover { border-color: var(--gold-border-h); }
+  .check-item.selected { border-color: var(--gold); color: var(--gold); background: var(--gold-dim); }
+  .check-item input { display: none; }
+
+  /* ═══ SUCCESS SCREEN ═══ */
+  .success-content { text-align: center; padding: 24px 10px; }
+  .success-icon { font-size: 48px; margin-bottom: 14px; }
+  .success-title { font-family: 'Bebas Neue', sans-serif; font-size: 24px; letter-spacing: 2px; margin-bottom: 8px; }
+  .success-text { color: var(--text-2); font-size: 14px; line-height: 1.6; margin-bottom: 20px; }
+  .success-text strong { color: var(--text); }
+  .success-divider {
+    width: 60px; height: 2px; background: var(--gold-border);
+    margin: 20px auto; border-radius: 2px;
+  }
+  .success-step-label {
+    font-family: 'Bebas Neue', sans-serif; font-size: 14px;
+    letter-spacing: 3px; color: var(--gold); margin-bottom: 12px; opacity: .8;
+  }
+  .success-sub { color: var(--text-3); font-size: 12px; margin-top: 12px; line-height: 1.5; }
+
+  /* ═══ ANIMATIONS ═══ */
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes ringPulse { 0%,100% { box-shadow: 0 0 0 0 rgba(232,168,56,.2); } 50% { box-shadow: 0 0 0 7px rgba(232,168,56,0); } }
+  @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: .3; } }
+
+  .sec:nth-child(2) { animation: fadeUp .6s ease .15s both; }
+  .sec:nth-child(3) { animation: fadeUp .6s ease .25s both; }
+  .sec:nth-child(4) { animation: fadeUp .6s ease .35s both; }
+  .sec:nth-child(5) { animation: fadeUp .6s ease .45s both; }
+
+  @media (max-width: 380px) {
+    .h-name { font-size: 22px; }
+    .stats { gap: 20px; }
+    .form-row { flex-direction: column; gap: 0; }
+  }
+
+  .modal::-webkit-scrollbar { width: 4px; }
+  .modal::-webkit-scrollbar-track { background: transparent; }
+  .modal::-webkit-scrollbar-thumb { background: var(--gold-border); border-radius: 4px; }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- ═══ HEADER ═══ -->
+  <div class="header">
+    <div class="avatar-wrap"><div class="avatar-inner">POW</div></div>
+    <div class="h-name">POW <span>MENTAL PERFORMANCE</span></div>
+    <div class="h-tag">Development Beyond Sports</div>
+    <p class="h-bio">We train the brain like you train the body. Building focus, confidence &amp; resilience in young athletes.</p>
+    <div class="badge"><span class="badge-dot"></span> Accepting New Clients</div>
+  </div>
+
+  <!-- ═══ STATS ═══ -->
+  <div class="stats">
+    <div><div class="stat-n">16+</div><div class="stat-l">Schools</div></div>
+    <div><div class="stat-n">850+</div><div class="stat-l">Athletes</div></div>
+    <div><div class="stat-n">5+</div><div class="stat-l">Years</div></div>
+  </div>
+
+  <!-- ═══ START HERE ═══ -->
+  <div class="sec">
+    <div class="sec-label">Start Here</div>
+    <button class="cta" onclick="openModal()">🧠 &nbsp;APPLY NOW</button>
+    <a href="https://cal.com/powsmentalperformance/discovery" target="_blank" class="cta-outline" id="main-discovery-btn">📞 &nbsp;BOOK A FREE DISCOVERY CALL</a>
+  </div>
+
+  <!-- ═══ SERVICES ═══ -->
+  <div class="sec">
+    <div class="sec-label">What We Offer</div>
+
+    <div class="card" onclick="openModal()">
+      <div class="card-icon ic-gold">🎯</div>
+      <div class="card-body">
+        <div class="card-title">1-on-1 Mental Performance</div>
+        <div class="card-desc">Personalized cognitive drills & focus training</div>
+      </div>
+      <span class="card-arrow">→</span>
+    </div>
+
+    <div class="card" onclick="openModal()">
+      <div class="card-icon ic-purple">🤝</div>
+      <div class="card-body">
+        <div class="card-title">Mentorship Program</div>
+        <div class="card-desc">Structure, accountability & goal-setting for athletes</div>
+      </div>
+      <span class="card-arrow">→</span>
+    </div>
+
+    <div class="card" onclick="openModal()">
+      <div class="card-icon ic-orange">⚡</div>
+      <div class="card-body">
+        <div class="card-title">Team & Group Training</div>
+        <div class="card-desc">Club, HS & college team sessions that build leaders</div>
+      </div>
+      <span class="card-arrow">→</span>
+    </div>
+
+    <div class="card" onclick="openModal()">
+      <div class="card-icon ic-blue">🏫</div>
+      <div class="card-body">
+        <div class="card-title">School & District Partnerships</div>
+        <div class="card-desc">Bring POW programs directly into your schools</div>
+      </div>
+      <span class="card-arrow">→</span>
+    </div>
+  </div>
+
+  <!-- ═══ TESTIMONIAL ═══ -->
+  <div class="sec">
+    <div class="sec-label">What People Say</div>
+    <div class="testi">
+      <p class="testi-q">"My son's confidence on and off the field has completely changed. POW doesn't just train athletes — they build kids up."</p>
+      <p class="testi-a">— POW Athletics Parent</p>
+    </div>
+  </div>
+
+  <!-- ═══ CONNECT ═══ -->
+  <div class="sec">
+    <div class="sec-label">Connect With Us</div>
+    <a href="https://powathletics.co" target="_blank" class="card">
+      <div class="card-icon ic-blue">🌐</div>
+      <div class="card-body">
+        <div class="card-title">POW Athletics Website</div>
+        <div class="card-desc">Programs, events & school partnerships</div>
+      </div>
+      <span class="card-arrow">→</span>
+    </a>
+    <a href="https://instagram.com/pow_athletics" target="_blank" class="card">
+      <div class="card-icon ic-pink">📸</div>
+      <div class="card-body">
+        <div class="card-title">@pow_athletics</div>
+        <div class="card-desc">Follow the main POW page</div>
+      </div>
+      <span class="card-arrow">→</span>
+    </a>
+  </div>
+
+  <!-- ═══ FOOTER ═══ -->
+  <div class="footer">
+    <div class="footer-b">POW ATHLETICS</div>
+    <div class="footer-s">We Build Champions. From the Brain Out.</div>
+  </div>
+</div>
+
+
+<!-- ═════════════════════════════════════════════════ -->
+<!-- ═══ APPLICATION MODAL ═══ -->
+<!-- ═════════════════════════════════════════════════ -->
+<div class="overlay" id="overlay" onclick="handleOverlayClick(event)">
+  <div class="modal" id="modal">
+
+    <!-- STEP 1: WHO ARE YOU? -->
+    <div class="form-section active" id="step-select">
+      <div class="modal-head">
+        <div class="modal-title">I'm applying as a...</div>
+        <button class="modal-close" onclick="closeModal()">✕</button>
+      </div>
+      <div class="type-grid">
+        <div class="type-card" onclick="showForm('parent')">
+          <div class="tc-icon">👨‍👩‍👧</div>
+          <div><div class="tc-title">Parent / Guardian</div><div class="tc-desc">Enrolling my child in mental performance training</div></div>
+        </div>
+        <div class="type-card" onclick="showForm('athlete')">
+          <div class="tc-icon">🏃</div>
+          <div><div class="tc-title">Individual Athlete</div><div class="tc-desc">I want to train my mental game personally</div></div>
+        </div>
+        <div class="type-card" onclick="showForm('team')">
+          <div class="tc-icon">🏆</div>
+          <div><div class="tc-title">Club / HS / College Team</div><div class="tc-desc">Looking for team-level mental performance training</div></div>
+        </div>
+        <div class="type-card" onclick="showForm('district')">
+          <div class="tc-icon">🏫</div>
+          <div><div class="tc-title">School District / Partner</div><div class="tc-desc">Interested in bringing POW programs to our schools</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ FORM: PARENT ══ -->
+    <div class="form-section" id="form-parent">
+      <div class="modal-head">
+        <div class="modal-title">Parent Application</div>
+        <button class="modal-close" onclick="closeModal()">✕</button>
+      </div>
+      <button class="form-back" onclick="goBack()">← Back</button>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Your Name *</label><input class="form-input" type="text" id="p-name" placeholder="Full name"></div>
+        <div class="form-group"><label class="form-label">Phone *</label><input class="form-input" type="tel" id="p-phone" placeholder="(000) 000-0000"></div>
+      </div>
+      <div class="form-group"><label class="form-label">Email *</label><input class="form-input" type="email" id="p-email" placeholder="you@email.com"></div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Athlete's Name *</label><input class="form-input" type="text" id="p-athlete" placeholder="Child's name"></div>
+        <div class="form-group"><label class="form-label">Age</label><input class="form-input" type="text" id="p-age" placeholder="e.g. 12"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Sport(s)</label><input class="form-input" type="text" id="p-sport" placeholder="e.g. Basketball, Soccer"></div>
+        <div class="form-group"><label class="form-label">Current Level</label>
+          <select class="form-select" id="p-level"><option value="">Select</option><option>Recreational</option><option>Club / Travel</option><option>Middle School</option><option>High School</option><option>College</option></select>
+        </div>
+      </div>
+      <div class="form-group"><label class="form-label">What are you looking for?</label>
+        <div class="check-group" id="p-services">
+          <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox" value="1-on-1 Mental Performance">1-on-1 Sessions</label>
+          <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox" value="Mentorship">Mentorship</label>
+          <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox" value="Group Training">Group Training</label>
+          <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox" value="Not Sure Yet">Not Sure Yet</label>
+        </div>
+      </div>
+      <div class="form-group"><label class="form-label">Tell us about your athlete's goals</label><textarea class="form-textarea" id="p-goals" placeholder="What are they struggling with? What do you want to see change?"></textarea></div>
+      <button class="form-submit" onclick="submitForm('parent')">SUBMIT & BOOK YOUR CALL →</button>
+      <p class="form-note">Next step: you'll book a free 30-min discovery call with our team.</p>
+    </div>
+
+    <!-- ══ FORM: ATHLETE ══ -->
+    <div class="form-section" id="form-athlete">
+      <div class="modal-head">
+        <div class="modal-title">Athlete Application</div>
+        <button class="modal-close" onclick="closeModal()">✕</button>
+      </div>
+      <button class="form-back" onclick="goBack()">← Back</button>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Your Name *</label><input class="form-input" type="text" id="a-name" placeholder="Full name"></div>
+        <div class="form-group"><label class="form-label">Age</label><input class="form-input" type="text" id="a-age" placeholder="e.g. 17"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Email *</label><input class="form-input" type="email" id="a-email" placeholder="you@email.com"></div>
+        <div class="form-group"><label class="form-label">Phone *</label><input class="form-input" type="tel" id="a-phone" placeholder="(000) 000-0000"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Sport(s) *</label><input class="form-input" type="text" id="a-sport" placeholder="e.g. Football, Track"></div>
+        <div class="form-group"><label class="form-label">Level *</label>
+          <select class="form-select" id="a-level"><option value="">Select</option><option>Club / Travel</option><option>High School</option><option>College</option><option>Pro / Semi-Pro</option></select>
+        </div>
+      </div>
+      <div class="form-group"><label class="form-label">What are you looking for?</label>
+        <div class="check-group" id="a-services">
+          <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox" value="1-on-1 Mental Performance">1-on-1 Sessions</label>
+          <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox" value="Mentorship">Mentorship</label>
+          <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox" value="Group Training">Group Training</label>
+          <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox" value="Not Sure Yet">Not Sure Yet</label>
+        </div>
+      </div>
+      <div class="form-group"><label class="form-label">What's your biggest mental challenge right now?</label><textarea class="form-textarea" id="a-goals" placeholder="Confidence, focus under pressure, consistency, motivation..."></textarea></div>
+      <button class="form-submit" onclick="submitForm('athlete')">SUBMIT & BOOK YOUR CALL →</button>
+      <p class="form-note">Next step: you'll book a free 30-min discovery call with our team.</p>
+    </div>
+
+    <!-- ══ FORM: TEAM ══ -->
+    <div class="form-section" id="form-team">
+      <div class="modal-head">
+        <div class="modal-title">Team Application</div>
+        <button class="modal-close" onclick="closeModal()">✕</button>
+      </div>
+      <button class="form-back" onclick="goBack()">← Back</button>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Your Name *</label><input class="form-input" type="text" id="t-name" placeholder="Full name"></div>
+        <div class="form-group"><label class="form-label">Your Role *</label>
+          <select class="form-select" id="t-role"><option value="">Select</option><option>Head Coach</option><option>Assistant Coach</option><option>Athletic Director</option><option>Team Manager</option><option>Parent Representative</option><option>Other</option></select>
+        </div>
+      </div>
+      <div class="form-group"><label class="form-label">Organization / Team Name *</label><input class="form-input" type="text" id="t-org" placeholder="e.g. Riverside FC, Lincoln HS"></div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Email *</label><input class="form-input" type="email" id="t-email" placeholder="you@email.com"></div>
+        <div class="form-group"><label class="form-label">Phone *</label><input class="form-input" type="tel" id="t-phone" placeholder="(000) 000-0000"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Sport</label><input class="form-input" type="text" id="t-sport" placeholder="e.g. Basketball"></div>
+        <div class="form-group"><label class="form-label">Level</label>
+          <select class="form-select" id="t-level"><option value="">Select</option><option>Youth / Club</option><option>Middle School</option><option>High School (JV)</option><option>High School (Varsity)</option><option>College</option></select>
+        </div>
+      </div>
+      <div class="form-group"><label class="form-label">Approx. Team Size</label><input class="form-input" type="text" id="t-size" placeholder="e.g. 15-20 athletes"></div>
+      <div class="form-group"><label class="form-label">What are you looking for?</label>
+        <div class="check-group" id="t-services">
+          <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox" value="Team Mental Performance Sessions">Team Sessions</label>
+          <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox" value="Pre-Season Workshop">Pre-Season Workshop</label>
+          <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox" value="Ongoing Season Support">Season Support</label>
+          <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox" value="Individual Athlete Evals">Individual Evals</label>
+        </div>
+      </div>
+      <div class="form-group"><label class="form-label">Anything else we should know?</label><textarea class="form-textarea" id="t-notes" placeholder="Team challenges, goals, timeline..."></textarea></div>
+      <button class="form-submit" onclick="submitForm('team')">SUBMIT & BOOK YOUR CALL →</button>
+      <p class="form-note">Next step: you'll book a free 30-min discovery call with our team.</p>
+    </div>
+
+    <!-- ══ FORM: DISTRICT ══ -->
+    <div class="form-section" id="form-district">
+      <div class="modal-head">
+        <div class="modal-title">Partnership Inquiry</div>
+        <button class="modal-close" onclick="closeModal()">✕</button>
+      </div>
+      <button class="form-back" onclick="goBack()">← Back</button>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Your Name *</label><input class="form-input" type="text" id="d-name" placeholder="Full name"></div>
+        <div class="form-group"><label class="form-label">Title / Role *</label><input class="form-input" type="text" id="d-title" placeholder="e.g. Principal, AD"></div>
+      </div>
+      <div class="form-group"><label class="form-label">Organization / District Name *</label><input class="form-input" type="text" id="d-org" placeholder="e.g. Val Verde USD"></div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Email *</label><input class="form-input" type="email" id="d-email" placeholder="you@email.com"></div>
+        <div class="form-group"><label class="form-label">Phone *</label><input class="form-input" type="tel" id="d-phone" placeholder="(000) 000-0000"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label"># of Schools</label><input class="form-input" type="text" id="d-schools" placeholder="e.g. 3"></div>
+        <div class="form-group"><label class="form-label">Est. Students</label><input class="form-input" type="text" id="d-students" placeholder="e.g. 500+"></div>
+      </div>
+      <div class="form-group"><label class="form-label">Programs of Interest</label>
+        <div class="check-group" id="d-services">
+          <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox" value="Enrichment Programs">Enrichment</label>
+          <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox" value="Mental Performance">Mental Performance</label>
+          <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox" value="Mentorship">Mentorship</label>
+          <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox" value="Athletic Training">Athletic Training</label>
+        </div>
+      </div>
+      <div class="form-group"><label class="form-label">Tell us about what you're looking for</label><textarea class="form-textarea" id="d-notes" placeholder="Goals, timeline, budget considerations..."></textarea></div>
+      <button class="form-submit" onclick="submitForm('district')">SUBMIT INQUIRY →</button>
+      <p class="form-note">Our team will personally review your inquiry and reach out within 24–48 hours.</p>
+    </div>
+
+    <!-- ══ SUCCESS: BOOK CALL (parents / athletes / teams) ══ -->
+    <div class="form-section" id="success-book">
+      <div class="modal-head">
+        <div class="modal-title" style="color:var(--gold);">Step 2 of 2</div>
+        <button class="modal-close" onclick="closeModal()">✕</button>
+      </div>
+      <div class="success-content">
+        <div class="success-icon">✅</div>
+        <div class="success-title">Application Received!</div>
+        <p class="success-text">Great — we've got your info. Now let's get you on the calendar.</p>
+
+        <div class="success-divider"></div>
+        <div class="success-step-label">BOOK YOUR DISCOVERY CALL</div>
+        <p class="success-text" style="font-size:13px;">Pick a time that works for you. This is a free 30-minute call to talk about goals, answer questions, and see if we're the right fit.</p>
+
+        <!--
+        ══════════════════════════════════════════
+        PASTE YOUR CAL.COM LINK BELOW
+        Replace PASTE_YOUR_CAL_LINK_HERE with your
+        actual Cal.com booking URL, e.g.:
+        https://cal.com/powmentalperformance/discovery
+        ══════════════════════════════════════════
+        -->
+        <a href="https://cal.com/powsmentalperformance/discovery" target="_blank" class="cta" style="margin-bottom:12px;">
+          📞 &nbsp;BOOK 30-MIN CALL
+        </a>
+
+        <button class="cta-outline" onclick="closeModal()" style="font-size:14px; letter-spacing:1px; padding:12px;">
+          I'LL BOOK LATER
+        </button>
+        <p class="success-sub">Not ready to book right now? No worries — we'll also reach out via email within 24–48 hours.</p>
+      </div>
+    </div>
+
+    <!-- ══ SUCCESS: DISTRICT (no booking) ══ -->
+    <div class="form-section" id="success-district">
+      <div class="success-content" style="padding-top:40px;">
+        <div class="success-icon">✅</div>
+        <div class="success-title">Inquiry Submitted!</div>
+        <p class="success-text">Thank you for your interest in partnering with POW Athletics. Our team will personally review your inquiry and reach out within <strong>24–48 hours</strong> to discuss next steps.</p>
+        <p class="success-sub">Check your email — we move fast.</p>
+        <button class="cta" onclick="closeModal()" style="max-width:260px; margin:20px auto 0;">GOT IT</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<script>
+// ══════════════════════════════════════════════════
+// CONFIGURATION
+// ══════════════════════════════════════════════════
+const BUSINESS_EMAIL = 'info@powathletics.co';
+const FORMSUBMIT_URL = 'https://formsubmit.co/ajax/' + BUSINESS_EMAIL;
+
+// ══════════════════════════════════════════════════
+// CAL.COM BOOKING LINK
+// ══════════════════════════════════════════════════
+// Once you create your Cal.com account, replace
+// the placeholder below with your real link:
+// e.g. https://cal.com/powmentalperformance/discovery
+// ══════════════════════════════════════════════════
+
+// ══════════════════════════════════════
+// MODAL
+// ══════════════════════════════════════
+function openModal() {
+  document.getElementById('overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  showStep('step-select');
+}
+
+function closeModal() {
+  document.getElementById('overlay').classList.remove('open');
+  document.body.style.overflow = '';
+  setTimeout(() => {
+    showStep('step-select');
+    resetAllForms();
+  }, 350);
+}
+
+function handleOverlayClick(e) {
+  if (e.target === document.getElementById('overlay')) closeModal();
+}
+
+function showStep(id) {
+  document.querySelectorAll('.form-section').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.getElementById('modal').scrollTop = 0;
+}
+
+function showForm(type) { showStep('form-' + type); }
+function goBack() { showStep('step-select'); }
+
+function resetAllForms() {
+  document.querySelectorAll('.form-input, .form-textarea').forEach(el => el.value = '');
+  document.querySelectorAll('.form-select').forEach(el => el.selectedIndex = 0);
+  document.querySelectorAll('.check-item').forEach(el => {
+    el.classList.remove('selected');
+    el.querySelector('input').checked = false;
+  });
+  document.querySelectorAll('.form-submit').forEach(b => b.disabled = false);
+}
+
+// ══════════════════════════════════════
+// CHECKBOX TOGGLES
+// ══════════════════════════════════════
+function toggleCheck(el) {
+  el.classList.toggle('selected');
+  const cb = el.querySelector('input');
+  cb.checked = !cb.checked;
+}
+
+function getChecked(containerId) {
+  const items = [];
+  document.querySelectorAll('#' + containerId + ' input:checked').forEach(cb => items.push(cb.value));
+  return items.length ? items.join(', ') : 'None selected';
+}
+
+// ══════════════════════════════════════
+// FORM SUBMISSION
+// ══════════════════════════════════════
+function val(id) { return (document.getElementById(id)?.value || '').trim(); }
+
+async function submitForm(type) {
+  let data = {};
+  let isDistrict = (type === 'district');
+
+  if (type === 'parent') {
+    if (!val('p-name') || !val('p-email') || !val('p-phone') || !val('p-athlete')) { alert('Please fill in all required fields.'); return; }
+    data = {
+      _subject: '🧠 New Parent Application — ' + val('p-athlete'),
+      'Application Type': 'PARENT / GUARDIAN',
+      'Parent Name': val('p-name'), 'Phone': val('p-phone'), 'Email': val('p-email'),
+      'Athlete Name': val('p-athlete'), 'Athlete Age': val('p-age'),
+      'Sport(s)': val('p-sport'), 'Level': val('p-level'),
+      'Services Interested In': getChecked('p-services'), 'Goals & Notes': val('p-goals')
+    };
+  }
+
+  if (type === 'athlete') {
+    if (!val('a-name') || !val('a-email') || !val('a-phone') || !val('a-sport')) { alert('Please fill in all required fields.'); return; }
+    data = {
+      _subject: '🧠 New Athlete Application — ' + val('a-name'),
+      'Application Type': 'INDIVIDUAL ATHLETE',
+      'Name': val('a-name'), 'Age': val('a-age'), 'Phone': val('a-phone'), 'Email': val('a-email'),
+      'Sport(s)': val('a-sport'), 'Level': val('a-level'),
+      'Services Interested In': getChecked('a-services'), 'Biggest Challenge': val('a-goals')
+    };
+  }
+
+  if (type === 'team') {
+    if (!val('t-name') || !val('t-email') || !val('t-phone') || !val('t-org')) { alert('Please fill in all required fields.'); return; }
+    data = {
+      _subject: '🧠 New Team Application — ' + val('t-org'),
+      'Application Type': 'CLUB / HS / COLLEGE TEAM',
+      'Contact Name': val('t-name'), 'Role': val('t-role'), 'Email': val('t-email'), 'Phone': val('t-phone'),
+      'Organization': val('t-org'), 'Sport': val('t-sport'), 'Level': val('t-level'), 'Team Size': val('t-size'),
+      'Services Interested In': getChecked('t-services'), 'Notes': val('t-notes')
+    };
+  }
+
+  if (type === 'district') {
+    if (!val('d-name') || !val('d-email') || !val('d-phone') || !val('d-org')) { alert('Please fill in all required fields.'); return; }
+    data = {
+      _subject: '🧠 New Partnership Inquiry — ' + val('d-org'),
+      'Application Type': 'SCHOOL DISTRICT / PARTNER',
+      'Contact Name': val('d-name'), 'Title': val('d-title'), 'Email': val('d-email'), 'Phone': val('d-phone'),
+      'Organization': val('d-org'), '# of Schools': val('d-schools'), 'Est. Students': val('d-students'),
+      'Programs of Interest': getChecked('d-services'), 'Notes': val('d-notes')
+    };
+  }
+
+  // Disable button
+  const btn = event.target;
+  const originalText = btn.textContent;
+  btn.disabled = true;
+  btn.textContent = 'SENDING...';
+
+  try {
+    const res = await fetch(FORMSUBMIT_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify(data)
+    });
+
+    if (res.ok) {
+      showStep(isDistrict ? 'success-district' : 'success-book');
+    } else {
+      fallbackMailto(data, isDistrict);
+    }
+  } catch (err) {
+    fallbackMailto(data, isDistrict);
+  }
+
+  btn.disabled = false;
+  btn.textContent = originalText;
+}
+
+function fallbackMailto(data, isDistrict) {
+  const subject = data._subject || 'New POW Application';
+  let body = '';
+  for (const [key, value] of Object.entries(data)) {
+    if (key.startsWith('_')) continue;
+    body += key + ': ' + value + '\n';
+  }
+  window.location.href = 'mailto:' + BUSINESS_EMAIL + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+  setTimeout(() => showStep(isDistrict ? 'success-district' : 'success-book'), 500);
+}
+</script>
+
+</body>
+</html>
